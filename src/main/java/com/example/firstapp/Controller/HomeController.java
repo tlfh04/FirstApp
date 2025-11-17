@@ -3,7 +3,11 @@ package com.example.firstapp.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -61,5 +65,47 @@ public class HomeController {
         Collections.sort(lucky);
         model.addAttribute("lucky", lucky);
         return "lotto";
+    }
+
+    @GetMapping("/profile/{username}")
+    public String profile(@PathVariable String username, Model model) {
+        model.addAttribute("username", username);
+
+        return "profile";
+    }
+
+    @GetMapping("/cube/{number}")
+    public String cube(@PathVariable Integer number, Model model) {
+        int result = number * number * number;
+        model.addAttribute("number", number);
+        model.addAttribute("result", result);
+        return "cube";
+    }
+
+    @GetMapping("/number/{number}")
+    public String number(@PathVariable Integer number, Model model) {
+        String result = number % 2 == 0 ? "짝수입니다." : "홀수입니다.";
+        model.addAttribute("number", number);
+        model.addAttribute("result",result);
+        return "number";
+    }
+    @GetMapping("/age/{birthday}")
+    public String age(@PathVariable Integer birthday, Model model) {
+        int age = Year.now().getValue() - birthday ;
+        model.addAttribute("birthday", birthday);
+        model.addAttribute("age", age);
+        return "age";
+    }
+
+    @GetMapping("/ping")
+    public String ping(Model model) {
+        return "ping";
+    }
+
+    @GetMapping("/pong")
+    public String pong(@RequestParam String title,@RequestParam String content, Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("content", content);
+        return "pong";
     }
 }
